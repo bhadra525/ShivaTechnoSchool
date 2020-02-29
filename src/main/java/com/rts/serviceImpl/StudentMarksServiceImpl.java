@@ -36,19 +36,45 @@ public class StudentMarksServiceImpl implements StudentMarksService {
 												+total.getDress()
 												+total.getReading()
 												+total.getWriting()));
-									
-			for(Marks mark:marks)		{
-				finalTotal=finalTotal+mark.getTotal();
-			}
+			
+	      
+					
+			finalTotal = marks.stream().filter(x -> x.getTotal()>0).mapToInt(x->x.getTotal()).sum();
 			studentMarks.setTotalMarks((int)finalTotal);
 			
-			int testType=100;
-			if((studentMarks.getExamType()).contains("unit") ){
-				testType= 40;
-			}
-			int totalMarks=testType*7;
 			
-			float percentage=(float)((finalTotal*100) / totalMarks);
+			int testTypeMarks=((studentMarks.getExamType()).contains("unit"))?40:100;
+			
+			if(testTypeMarks== 40) {
+			  marks.forEach(grade-> grade.setGrade(grade.getTotal()<14?"Fail":
+					(grade.getTotal()>14 &&grade.getTotal()<20)?"D1":
+					(grade.getTotal()>=21 &&grade.getTotal()<24)?"C1":
+					(grade.getTotal()>=25 &&grade.getTotal()<28)?"C2":
+					(grade.getTotal()>=29 &&grade.getTotal()<32)?"B1":
+					(grade.getTotal()>=33 &&grade.getTotal()<36)?"B2":
+					(grade.getTotal()>37 &&grade.getTotal()<40)?"A":"Wrong Entry"));
+			  
+			  studentMarks.setGrade(studentMarks.getTotalMarks()>40? "G1":"G2");
+			  
+			  
+			}else {
+				 marks.forEach(grade-> grade.setGrade(grade.getTotal()<35?"Fail":
+						(grade.getTotal()>35 &&grade.getTotal()<=40)?"D1":
+						(grade.getTotal()>=41 &&grade.getTotal()<=50)?"D":
+						(grade.getTotal()>=51 &&grade.getTotal()<=60)?"C1":
+						(grade.getTotal()>=61 &&grade.getTotal()<=70)?"C2":
+						(grade.getTotal()>=71 &&grade.getTotal()<=80)?"B1":
+						(grade.getTotal()>=81 &&grade.getTotal()<=90)?"B2":"A"));
+				 
+				  studentMarks.setGrade(studentMarks.getTotalMarks()>40? "G1":"G2" );
+			}
+					
+			float percentage=(float)((finalTotal*100) / (testTypeMarks*7));
+			
+			
+		
+			
+			
 			studentMarks.setPercentage(percentage);
 			finalstudentsMarks.add(studentMarks);
          }
