@@ -13,7 +13,7 @@ import com.rts.VO.StudentMarks;
 import com.rts.service.StudentMarksService;
 
 @RestController
-public class MarksController {
+public class MarksController  {
 	
 	@Autowired
 	StudentMarksService studentMarksService;
