@@ -16,7 +16,7 @@ import com.rts.service.StudentMarksService;
 public class MarksController  {
 	
 	@Autowired
-	StudentMarksService studentMarksService;
+	StudentMarksService  studentMarksService;
 	
 	@PostMapping("/addSubjectMarks")
 	public List<StudentMarks> addMarks(@RequestBody List<StudentMarks> studentsMarks) {
